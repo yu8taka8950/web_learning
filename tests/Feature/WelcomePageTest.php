@@ -48,6 +48,8 @@ test('guest sees the complete public landing page without external requests', fu
         ->assertSee('Chrome Web Store公開前のテスト版です')
         ->assertDontSee('学校発表用')
         ->assertSee('<span class="block whitespace-nowrap">読むだけでは</span><span class="block whitespace-nowrap">終わらせない</span>', false)
+        ->assertSee('text-[clamp(2.75rem,12vw,4rem)]', false)
+        ->assertSee('sm:text-[clamp(3.25rem,6.5vw,7.5rem)]', false)
         ->assertSee('text-left', false)
         ->assertSee('id="screenshot-learning"', false)
         ->assertSee('SCREENSHOT LEARNING')
