@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#F7F5F0">
+    <title>オフライン | Web Learning</title>
+    <style>
+        :root { color: #171717; background: #F7F5F0; font-family: "Noto Sans JP", Inter, system-ui, sans-serif; }
+        * { box-sizing: border-box; }
+        body { display: grid; min-height: 100vh; margin: 0; place-items: center; padding: 24px; }
+        main { width: min(100%, 32rem); border: 1px solid #ddd8cf; background: #fff; padding: clamp(2rem, 6vw, 3.5rem); }
+        .eyebrow { margin: 0; color: #3155D9; font-size: .75rem; font-weight: 700; letter-spacing: .18em; }
+        h1 { margin: 1rem 0 0; font-size: clamp(1.75rem, 5vw, 2.25rem); letter-spacing: -.025em; }
+        p { margin: 1.25rem 0 0; color: #57534e; font-size: 1rem; line-height: 1.8; }
+        button { margin-top: 2rem; border: 0; background: #3155D9; color: #fff; cursor: pointer; font: inherit; font-weight: 700; padding: .8rem 1.1rem; }
+        button:hover { background: #2847B8; }
+        button:focus-visible { outline: 2px solid #3155D9; outline-offset: 4px; }
+    </style>
+</head>
+<body>
+    <main>
+        <p class="eyebrow">OFFLINE</p>
+        <h1>インターネットに接続できません</h1>
+        <p>Web Learningの学習機能やAI機能を利用するには、インターネット接続が必要です。接続を確認して、もう一度お試しください。</p>
+        <button type="button" onclick="location.reload()">もう一度試す</button>
+    </main>
+</body>
+</html>

@@ -1,0 +1,65 @@
+*.log
+.DS_Store
+.env
+.env.*
+!.env.example
+.env.backup
+.env.production
+.phpactor.json
+.phpunit.result.cache
+/.codex
+/.cursor/
+/.idea
+/.nova
+/.phpunit.cache
+/.vscode
+/.zed
+/auth.json
+/node_modules/
+/public/build
+/public/fonts-manifest.dev.json
+/public/hot
+/public/storage
+/storage/*.key
+/storage/logs/
+/storage/framework/
+/storage/app/private/
+/storage/app/private/screenshots/
+/storage/pail
+/vendor/
+*.dump
+*.pem
+*.sql
+*.sqlite
+*.sqlite3
+_ide_helper.php
+Homestead.json
+Homestead.yaml
+Thumbs.db
+
+# Local AI / agent settings
+/.agents/
+/.ai/
+/.claude/
+/.mcp.json
+/AGENTS.md
+/CLAUDE.md
+
+# Eclipse / local IDE settings
+/.buildpath
+/.project
+/.settings/
+
+# Temporary editor files
+*.bak
+*.swp
+*.swo
+*~
+
+# Generated distribution files
+/public/downloads/*.zip
+
+# User uploaded public files
+/storage/app/public/*
+!/storage/app/public/.gitignore
+/boost.json

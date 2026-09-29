@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>学習候補の確認 | Web Learning</title>
+    <style>
+        :root {
+            --loading-duration: 4s;
+            color: #1f2937;
+            background: #f7f5f0;
+            font-family: sans-serif;
+        }
+
+        body {
+            margin: 0;
+            background: #f7f5f0;
+        }
+
+        main {
+            max-width: 880px;
+            margin: 0 auto;
+            padding: 32px 20px 48px;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 28px;
+        }
+
+        h2 {
+            margin: 0 0 16px;
+            font-size: 20px;
+        }
+
+        .subtitle {
+            margin: 8px 0 24px;
+            color: #4b5563;
+        }
+
+        .card {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 10px;
+            background: #ffffff;
+            box-shadow: 0 1px 3px rgb(0 0 0 / 10%);
+        }
+
+        .page-title {
+            margin: 8px 0;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .page-url {
+            color: #4f46e5;
+            overflow-wrap: anywhere;
+        }
+
+        .toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        button {
+            padding: 9px 14px;
+            border: 1px solid #4f46e5;
+            border-radius: 6px;
+            background: #ffffff;
+            color: #4338ca;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        button:disabled {
+            border-color: #d1d5db;
+            color: #9ca3af;
+            cursor: not-allowed;
+        }
+
+        #selectedCount {
+            margin-left: auto;
+            font-weight: bold;
+        }
+
+        #terms {
+            display: grid;
+            gap: 12px;
+        }
+
+        .term {
+            display: flex;
+            gap: 12px;
+            padding: 16px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+        }
+
+        .term input {
+            width: 18px;
+            height: 18px;
+            margin: 2px 0 0;
+        }
+
+        .term-name {
+            font-weight: bold;
+        }
+
+        .term-description {
+            margin-top: 6px;
+            color: #4b5563;
+            line-height: 1.5;
+        }
+
+        #emptyMessage,
+        #nextStepMessage {
+            color: #4b5563;
+        }
+
+        .wordmark {
+            display: inline-block;
+            color: #171717;
+            font-size: 20px;
+            font-weight: 600;
+            letter-spacing: -0.03em;
+            line-height: 1;
+            text-decoration: none;
+        }
+
+        .wordmark span { color: #3155d9; }
+        .wordmark strong { color: #171717; font-weight: 600; }
+        main > h1 { margin-top: 28px; }
+
+        .card {
+            background: transparent;
+            border: 0;
+            border-radius: 0;
+            box-shadow: none;
+        }
+
+        .card:first-of-type {
+            margin-top: 28px;
+            padding: 0 0 20px;
+            border-bottom: 1px solid #d6d3d1;
+        }
+
+        .card:nth-of-type(2) {
+            margin-top: 0;
+            padding: 24px 0 12px;
+        }
+
+        .card:nth-of-type(2) h2 { margin-bottom: 0; }
+
+        .section-heading {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .candidate-total,
+        #selectedCount {
+            color: #178c78;
+            font-size: 13px;
+            font-weight: 650;
+        }
+
+        .toolbar {
+            margin-top: 10px;
+            margin-bottom: 0;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #d6d3d1;
+        }
+
+        .toolbar button {
+            padding: 4px 0;
+            border: 0;
+            background: transparent;
+            color: #3155d9;
+            font-size: 12px;
+        }
+
+        #selectedCount { margin-left: auto; }
+
+        #terms {
+            display: block;
+        }
+
+        .term {
+            display: flex;
+            gap: 12px;
+            padding: 15px 0;
+            border: 0;
+            border-bottom: 1px solid #d6d3d1;
+            border-radius: 0;
+        }
+
+        .term input {
+            flex: 0 0 auto;
+            width: 18px;
+            height: 18px;
+            margin: 2px 0 0;
+            accent-color: #3155d9;
+        }
+
+        .term-name {
+            color: #171717;
+            font-size: 15px;
+            font-weight: 650;
+        }
+
+        .term-description {
+            max-width: 660px;
+            margin-top: 5px;
+            color: #57534e;
+            font-size: 13px;
+            line-height: 1.65;
+        }
+
+        .action-card {
+            position: sticky;
+            bottom: 0;
+            z-index: 2;
+            margin-top: 0;
+            padding: 14px 0 16px;
+            border-top: 1px solid #d6d3d1;
+            background: #f7f5f0;
+        }
+
+        #generateQuestionsButton {
+            width: auto;
+            margin-top: 0;
+            border-color: #3155d9;
+            background: #3155d9;
+            color: #fff;
+            font-weight: 650;
+        }
+
+        #nextStepMessage { margin-top: 8px; }
+
+        @media (prefers-reduced-motion: reduce) {
+            .action-card { transition: none; }
+        }
+
+        #generationProgress {
+            display: grid;
+            gap: 12px;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid #d6d3d1;
+        }
+
+        #generationProgress[hidden] {
+            display: none;
+        }
+
+        .generation-heading {
+            margin: 0;
+            color: #171717;
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .generation-phase {
+            margin: 4px 0 0;
+            color: #57534e;
+            font-size: 12px;
+        }
+
+        .runner-track {
+            position: relative;
+            height: 42px;
+            margin: 0 8px;
+            overflow: hidden;
+            border-bottom: 1px solid #a8a29e;
+        }
+
+        .runner-track::before {
+            position: absolute;
+            right: 0;
+            bottom: -1px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #3155d9;
+            content: '';
+            animation: progress-grow var(--loading-duration) linear forwards;
+        }
+
+        .runner {
+            position: absolute;
+            bottom: 5px;
+            left: 0;
+            width: 24px;
+            height: 32px;
+            color: #171717;
+            animation: runner-travel var(--loading-duration) linear forwards;
+        }
+
+        .runner-figure {
+            position: relative;
+            display: block;
+            width: 24px;
+            height: 32px;
+            animation: runner-bob 0.6s ease-in-out infinite;
+        }
+
+        .runner-head {
+            position: absolute;
+            top: 0;
+            left: 8px;
+            width: 8px;
+            height: 8px;
+            border: 2px solid currentColor;
+            border-radius: 50%;
+        }
+
+        .runner-body,
+        .runner-arm,
+        .runner-leg {
+            position: absolute;
+            display: block;
+            width: 2px;
+            background: currentColor;
+            transform-origin: top center;
+        }
+
+        .runner-body { top: 9px; left: 11px; height: 13px; }
+        .runner-arm { top: 11px; left: 11px; height: 11px; }
+        .runner-arm { animation: arm-swing 0.6s ease-in-out infinite; }
+        .runner-arm.one { animation-delay: 0s; }
+        .runner-arm.two { animation-delay: -0.3s; }
+        .runner-leg { top: 20px; left: 11px; height: 12px; }
+        .runner-leg { animation: leg-swing 0.6s ease-in-out infinite; }
+        .runner-leg.one { animation-delay: -0.3s; }
+        .runner-leg.two { animation-delay: 0s; }
+
+        @keyframes arm-swing {
+            0%, 100% { transform: rotate(-38deg); }
+            50% { transform: rotate(38deg); }
+        }
+
+        @keyframes leg-swing {
+            0%, 100% { transform: rotate(-48deg); }
+            50% { transform: rotate(48deg); }
+        }
+
+        @keyframes runner-bob {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-3px); }
+        }
+
+        @keyframes runner-travel {
+            from { left: 0; }
+            to { left: calc(100% - 24px); }
+        }
+
+        @keyframes progress-grow {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .runner,
+            .runner-figure,
+            .runner-arm,
+            .runner-leg,
+            .runner-track::before {
+                animation: none;
+            }
+
+            .runner { left: calc(50% - 12px); }
+            .runner-track::before { width: 100%; }
+        }
+
+        @media (max-width: 600px) {
+            main {
+                padding: 24px 16px;
+            }
+
+            #selectedCount {
+                width: 100%;
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <a id="appLink" class="wordmark" href="#" target="_blank" rel="noopener noreferrer" aria-label="Web Learningを開く"><span>web</span><strong> learning</strong><span>.</span></a>
+        <h1>学習候補</h1>
+        <p class="subtitle">このページから見つけた用語です。覚えたいものを選んでください。</p>
+
+        <section class="card" aria-labelledby="sourceHeading">
+            <h2 id="sourceHeading">元ページ</h2>
+            <p id="pageTitle" class="page-title">読み込み中...</p>
+            <p id="pageUrl" class="page-url"></p>
+        </section>
+
+        <section class="card" aria-labelledby="termsHeading">
+            <div class="section-heading"><h2 id="termsHeading">学習候補</h2><span class="candidate-total"><span id="candidateCount">0</span>件</span></div>
+            <div class="toolbar">
+                <button id="selectAllButton" type="button">全て選択</button>
+                <button id="clearAllButton" type="button">全て解除</button>
+                <span id="selectedCount">選択中：0件</span>
+            </div>
+            <div id="terms"></div>
+            <p id="emptyMessage" hidden>このページにはまだ学習候補がありません。</p>
+        </section>
+
+        <section class="card action-card">
+            <button id="generateQuestionsButton" type="button">選択した用語から問題を作る</button>
+            <p id="nextStepMessage" role="status">選択した用語ごとに、4択問題を1問ずつ生成します。</p>
+            <div id="generationProgress" hidden role="status" aria-live="polite" aria-label="問題生成中">
+                <div>
+                    <p class="generation-heading">問題を生成しています…</p>
+                    <p id="generationPhase" class="generation-phase">用語を整理しています</p>
+                </div>
+                <div class="runner-track" aria-hidden="true">
+                    <span class="runner"><span class="runner-figure"><i class="runner-head"></i><i class="runner-body"></i><i class="runner-arm one"></i><i class="runner-arm two"></i><i class="runner-leg one"></i><i class="runner-leg two"></i></span></span>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="review.js"></script>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Web Learning</title>
+    <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+    <header class="popup-header">
+        <a id="appLinkHeader" class="wordmark" href="#" target="_blank" rel="noopener noreferrer" aria-label="Web Learningを開く"><span>web</span><strong> learning</strong><span>.</span></a>
+    </header>
+
+    <main class="popup-main">
+        <section aria-labelledby="learnHeading">
+            <h1 id="learnHeading">このページで学ぶ</h1>
+            <div class="mode-row">
+                <div>
+                    <p class="eyebrow">LEARNING MODE</p>
+                    <p class="mode-label">学習モード <span id="status" class="status-value">OFF</span></p>
+                </div>
+                <button id="toggleButton" class="mode-toggle" type="button" aria-pressed="false">ONにする</button>
+            </div>
+            <p id="modeDescription" class="supporting-text">オンにすると、閲覧した内容から学習候補を見つけます。</p>
+            <div id="siteModeControls" class="site-mode-controls" hidden>
+                <div>
+                    <p class="eyebrow">このサイト</p>
+                    <span id="siteHost" class="site-host"></span>
+                    <p id="siteModeStatus" class="site-mode-status"></p>
+                </div>
+                <button id="siteToggleButton" class="text-button" type="button" aria-pressed="false">このサイトでは学習しない</button>
+            </div>
+        </section>
+
+        <div class="divider" role="presentation"></div>
+
+        <section aria-labelledby="pageHeading">
+            <h2 id="pageHeading">現在のページ</h2>
+            <p id="pageTitle" class="page-title">読み込み中...</p>
+            <p id="pageUrl" class="page-url"></p>
+            <p id="message" class="message" role="status" aria-live="polite"></p>
+            <a id="pricingLink" class="primary-link" href="#" target="_blank" rel="noopener noreferrer" hidden>Plusを見る →</a>
+        </section>
+
+        <div class="divider" role="presentation"></div>
+
+        <section id="termsSection" aria-labelledby="termsHeading">
+            <div class="section-heading"><h2 id="termsHeading">このページで見つけた学び</h2><span class="count"><span id="candidateCount">0</span>件</span></div>
+            <a id="reviewLink" class="primary-link" href="#" target="_blank" rel="noopener noreferrer" hidden>候補を見る →</a>
+            <p id="emptyMessage" class="empty-message" hidden>まだありません。Learning ModeがONなら、ページを読み進めると候補が見つかります。</p>
+        </section>
+
+        <div class="divider" role="presentation"></div>
+        <section aria-labelledby="captureHeading">
+            <div class="section-heading"><h2 id="captureHeading">Web学習リスト</h2><a id="capturesLink" href="#" target="_blank" rel="noopener noreferrer">Web学習リストを見る →</a></div>
+        </section>
+
+        <details id="advancedSettings" class="settings-details" hidden>
+            <summary>詳細設定</summary>
+            <button id="disconnectButton" class="text-button danger-text" type="button" hidden>Web Learningとの接続を解除</button>
+        </details>
+    </main>
+
+    <footer class="popup-footer">
+        <a id="appLink" href="#" target="_blank" rel="noopener noreferrer">Web Learningを開く →</a>
+        <a id="termsLink" href="#" target="_blank" rel="noopener noreferrer">利用規約</a>
+        <a id="privacyLink" href="#" target="_blank" rel="noopener noreferrer">プライバシーポリシー</a>
+    </footer>
+
+    <script src="popup.js"></script>
+</body>
+</html>
